@@ -56,4 +56,4 @@ Gain 64
 
 ## Acknowledgements
 
-The basis of this program is heavily influenced by [CommandCam](https://github.com/tedburke/CommandCam/blob/master/Makefile).
+The basis of this program is heavily influenced by [CommandCam](https://github.com/tedburke/CommandCam/).

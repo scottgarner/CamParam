@@ -1,0 +1,1 @@
+cl.exe /Os camparam.cpp ole32.lib strmiids.lib oleaut32.lib

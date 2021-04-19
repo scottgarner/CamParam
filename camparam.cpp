@@ -1,5 +1,3 @@
-// https://github.com/tedburke/CommandCam
-
 #include <windows.h>
 #include <dshow.h>
 
@@ -11,26 +9,26 @@ struct KeyValuePair
 
 const int cameraControlPropertyCount = 7;
 KeyValuePair cameraControlProperties[] = {
-    {"pan", CameraControl_Pan},
-    {"tilt", CameraControl_Tilt},
-    {"roll", CameraControl_Roll},
-    {"zoom", CameraControl_Zoom},
-    {"exposure", CameraControl_Exposure},
-    {"iris", CameraControl_Iris},
-    {"focus", CameraControl_Focus}};
+    {(char *)"pan", CameraControl_Pan},
+    {(char *)"tilt", CameraControl_Tilt},
+    {(char *)"roll", CameraControl_Roll},
+    {(char *)"zoom", CameraControl_Zoom},
+    {(char *)"exposure", CameraControl_Exposure},
+    {(char *)"iris", CameraControl_Iris},
+    {(char *)"focus", CameraControl_Focus}};
 
 const int videoProcAmpPropertyCount = 10;
 KeyValuePair videoProcAmpProperties[] = {
-    {"brightness", VideoProcAmp_Brightness},
-    {"contrast", VideoProcAmp_Contrast},
-    {"hue", VideoProcAmp_Hue},
-    {"saturation", VideoProcAmp_Saturation},
-    {"sharpness", VideoProcAmp_Sharpness},
-    {"gamma", VideoProcAmp_Gamma},
-    {"colorenable", VideoProcAmp_ColorEnable},
-    {"whitebalance", VideoProcAmp_WhiteBalance},
-    {"backlightcompensation", VideoProcAmp_BacklightCompensation},
-    {"gain", VideoProcAmp_Gain}};
+    {(char *)"brightness", VideoProcAmp_Brightness},
+    {(char *)"contrast", VideoProcAmp_Contrast},
+    {(char *)"hue", VideoProcAmp_Hue},
+    {(char *)"saturation", VideoProcAmp_Saturation},
+    {(char *)"sharpness", VideoProcAmp_Sharpness},
+    {(char *)"gamma", VideoProcAmp_Gamma},
+    {(char *)"colorenable", VideoProcAmp_ColorEnable},
+    {(char *)"whitebalance", VideoProcAmp_WhiteBalance},
+    {(char *)"backlightcompensation", VideoProcAmp_BacklightCompensation},
+    {(char *)"gain", VideoProcAmp_Gain}};
 
 const int MAX_COMMANDS = 18;
 int commandCount = 0;
@@ -134,7 +132,7 @@ int main(int argc, char *argv[])
     // Get device.
     int deviceIndex;
 
-    KeyValuePair *keyValuePair = getKeyValuePairByKey(commands, commandCount, "device");
+    KeyValuePair *keyValuePair = getKeyValuePairByKey(commands, commandCount, (char *)"device");
     if (keyValuePair != NULL)
     {
         deviceIndex = keyValuePair->value;
@@ -197,7 +195,7 @@ int main(int argc, char *argv[])
         if (videoProcAmpProperty != NULL)
         {
             videoProcAmp->Set(videoProcAmpProperty->value, command.value, VideoProcAmp_Flags_Manual);
-            fprintf(stdout, "%s %ld\n", command.key, command.value);
+            fprintf(stdout, "%s %d\n", command.key, command.value);
             updatedProperties++;
             continue;
         }
@@ -209,12 +207,12 @@ int main(int argc, char *argv[])
         if (cameraControlProperty != NULL)
         {
             cameraControl->Set(cameraControlProperty->value, command.value, CameraControl_Flags_Manual);
-            fprintf(stdout, "%s %ld\n", command.key, command.value);
+            fprintf(stdout, "%s %d\n", command.key, command.value);
             updatedProperties++;
             continue;
         }
 
-        fprintf(stdout, "Unknown argument: %s\n", command.key, command.value);
+        fprintf(stdout, "Unknown argument: %s\n", command.key);
     }
 
     if (updatedProperties == 0)
@@ -239,4 +237,6 @@ int main(int argc, char *argv[])
                 fprintf(stdout, "%s %ld\n", property.key, value);
         }
     }
+
+    return (0);
 }
